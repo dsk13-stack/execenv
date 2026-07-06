@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use std::{os::unix::process::CommandExt, process::Command};
 
-pub fn exec_proc(cmd: &String, args: &Vec<String>) -> Result<()> {
+pub fn exec_proc(cmd: &str, args: &[String]) -> Result<()> {
     let err = Command::new(cmd).args(args).exec();
 
     Err(err).with_context(|| format!("failed to execute command `{} {}`", cmd, args.join(" ")))

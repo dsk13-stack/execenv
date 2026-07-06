@@ -1,3 +1,5 @@
+[![pipeline status](https://github.com/dsk13-stack/execenv/actions/workflows/ci.yml/badge.svg)](https://github.com/dsk13-stack/execenv/actions/workflows/ci.yml) [![Release](https://github.com/dsk13-stack/execenv/actions/workflows/release.yml/badge.svg)](https://github.com/dsk13-stack/execenv/actions/workflows/release.yml)
+
 # execenv
 
 `execenv` is a small Unix-oriented entrypoint wrapper for containers.

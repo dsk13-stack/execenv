@@ -1,5 +1,3 @@
-[![pipeline status](https://github.com/dsk13-stack/execenv/actions/workflows/ci.yml/badge.svg)](https://github.com/dsk13-stack/execenv/actions/workflows/ci.yml)
-
 # execenv
 
 `execenv` — небольшая Unix-oriented entrypoint-утилита для контейнеров.
