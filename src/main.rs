@@ -2,15 +2,15 @@
 compile_error!("execenv is intended for Unix-like systems!");
 
 use anyhow::Result;
+use args::{ExecCommand, FilesMapping};
 use cli::parse_cli_args;
 use envsubst::envsubst;
 use run_process::exec_proc;
-use args::{FilesMapping, ExecCommand};
 
+mod args;
 mod cli;
 mod envsubst;
 mod run_process;
-mod args;
 
 fn main() -> Result<()> {
     let cli_args = parse_cli_args();
