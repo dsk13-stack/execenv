@@ -32,7 +32,7 @@ A common case is a frontend or static distroless application image that is reuse
 
 ## Installation
 
-Build from source:
+### Build from source:
 
 ```sh
 cargo build --release
@@ -45,6 +45,11 @@ target/release/execenv
 ```
 
 The project requires **Rust 1.91** or newer.
+
+### Download stable release
+
+The compiled binary file for the latest stable release is available at https://github.com/dsk13-stack/execenv/releases.
+
 
 ## Usage
 
