@@ -60,7 +60,7 @@ execenv -f <file> [-m <mode>] [-e <command> [args...]]
 
 ### Аргументы файлов
 
-Обычный путь к файлу рендерится на месте:
+Обычный путь к файлу - рендерится in-place:
 
 ```sh
 execenv --files /app/config.yaml
@@ -160,22 +160,44 @@ CMD ["--files", "/templates/nginx.conf=/etc/nginx/nginx.conf", "--missing-env", 
 
 ## Синтаксис плейсхолдеров
 
-Подставляется только форма `${VAR}`.
+`execenv` использует синтаксис placeholder'ов в стиле Spring Boot.
+
+Поддерживаются две формы:
+
+```text
+${VAR}
+${VAR:default}
+```
 
 Примеры:
 
 ```text
 ${DATABASE_URL}
-${APP_PORT}
-${REDIS_HOST}
+${APP_PORT:8080}
+${LOG_LEVEL:info}
+${API_URL:https://localhost:8080/api}
 ```
 
-Другие shell-style формы не раскрываются:
+Поведение:
+
+| Плейсхолдер | Переменная | Результат |
+|---|---|---|
+| `${VAR}` | unset | зависит от `--missing-env` |
+| `${VAR}` | `""` | пустая строка |
+| `${VAR:}` | unset | пустая строка |
+| `${VAR:default}` | unset | `default` |
+| `${VAR:default}` | `""` | пустая строка |
+| `${VAR:default}` | задана | значение переменной |
+
+Если указано значение по умолчанию после `:`, флаг `--missing-env` для этого плейсхолдера не применяется.
+
+Не поддерживаются:
 
 ```text
 $VAR
 ${VAR:-default}
 ${VAR-default}
+${OUTER.${INNER}}
 ```
 
 ## Замечания по безопасности

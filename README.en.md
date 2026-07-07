@@ -160,22 +160,44 @@ CMD ["--files", "/templates/nginx.conf=/etc/nginx/nginx.conf", "--missing-env", 
 
 ## Placeholder syntax
 
-Only the `${VAR}` form is substituted.
+`execenv` uses Spring Boot-style property placeholders.
+
+Two forms are supported:
+
+```text
+${VAR}
+${VAR:default}
+```
 
 Examples:
 
 ```text
 ${DATABASE_URL}
-${APP_PORT}
-${REDIS_HOST}
+${APP_PORT:8080}
+${LOG_LEVEL:info}
+${API_URL:https://localhost:8080/api}
 ```
 
-Other shell-style forms are not expanded:
+Behavior:
+
+| Placeholder | Variable | Result |
+|---|---|---|
+| `${VAR}` | unset | depends on `--missing-env` |
+| `${VAR}` | `""` | empty string |
+| `${VAR:}` | unset | empty string |
+| `${VAR:default}` | unset | `default` |
+| `${VAR:default}` | `""` | empty string |
+| `${VAR:default}` | set | variable value |
+
+When a default value is specified after `:`, `--missing-env` does not apply to that placeholder.
+
+Not supported:
 
 ```text
 $VAR
 ${VAR:-default}
 ${VAR-default}
+${OUTER.${INNER}}
 ```
 
 ## Security notes

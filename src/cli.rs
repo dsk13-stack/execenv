@@ -12,16 +12,22 @@ pub enum EnvErrorMode {
 #[command(arg_required_else_help = true)]
 #[command(about = "Render environment variables into files, then optionally exec a command")]
 #[command(
-    long_about = r#"execenv renders `${VAR}` placeholders in one or more files using values from the current environment.
+    long_about = r#"execenv renders Spring Boot-style `${VAR}` placeholders in one or more files using values from the current environment.
+
+Supported forms:
+  ${VAR}
+  ${VAR:default}
 
 By default, each file is rewritten in place. To keep the source file unchanged and write the rendered output somewhere else, pass a mapping in the `<input>=<output>` form.
 
 Rendering is performed before the command is executed. If any file fails to render, the command is not started.
 
-Missing variables are controlled by `--missing-env`:
+Missing variables in `${VAR}` placeholders are controlled by `--missing-env`:
   empty  Replace missing variables with an empty string. This is the default.
   keep   Leave unresolved `${VAR}` placeholders unchanged.
   error  Fail immediately when a referenced variable is not set.
+
+When a default value is specified in `${VAR:default}`, it is used if the variable is unset and `--missing-env` is ignored for that placeholder.
 
 When `--exec` is passed, execenv replaces itself with the requested command using exec(2). Everything after `--exec` is treated as the command and its arguments, including values that look like flags.
 
