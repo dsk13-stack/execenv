@@ -92,11 +92,11 @@ fn process_env<F: FnMut(&str) -> Result<String>>(
     env_error_mode: &EnvErrorMode,
     resolve_env_func: &mut F,
 ) -> Result<String> {
-    let (name, default_value) = env_str
+    let (env_name, default_value) = env_str
         .split_once(DEFAULT_VALUE_SEP)
         .map_or((env_str, None), |tuple| (tuple.0, Some(tuple.1)));
 
-    let result = resolve_env_func(name);
+    let result = resolve_env_func(env_name);
     match result {
         Ok(val) => Ok(val),
         Err(err) => {
@@ -109,7 +109,7 @@ fn process_env<F: FnMut(&str) -> Result<String>>(
                     "{}{}{}{}",
                     ENV_SIGN as char, START_SIGN as char, env_str, END_SIGN as char
                 )),
-                EnvErrorMode::Error => bail!("{err} `{env_str}`"),
+                EnvErrorMode::Error => bail!("{err} `{env_name}`"),
             }
         }
     }
