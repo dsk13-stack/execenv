@@ -1,4 +1,4 @@
-[![pipeline status](https://github.com/dsk13-stack/execenv/actions/workflows/ci.yml/badge.svg)](https://github.com/dsk13-stack/execenv/actions/workflows/ci.yml) [![Release](https://github.com/dsk13-stack/execenv/actions/workflows/release.yml/badge.svg)](https://github.com/dsk13-stack/execenv/actions/workflows/release.yml)
+[![Check](https://github.com/dsk13-stack/execenv/actions/workflows/check.yml/badge.svg)](https://github.com/dsk13-stack/execenv/actions/workflows/check.yml) [![Release](https://github.com/dsk13-stack/execenv/actions/workflows/release.yml/badge.svg)](https://github.com/dsk13-stack/execenv/actions/workflows/release.yml)
 
 # execenv
 
