@@ -74,6 +74,46 @@ jobs:
             sha256sum "${asset_name}" > "execenv-v${version}.checksums.txt"
           )
 
+      - name: Generate release notes
+        shell: bash
+        env:
+          RELEASE_NOTES_TEMPLATE: ${{ vars.RELEASE_NOTES_TEMPLATE }}
+        run: |
+          set -euo pipefail
+
+          version="${GITHUB_REF_NAME#v}"
+          tag="${GITHUB_REF_NAME}"
+          repo="${GITHUB_REPOSITORY}"
+
+          export ASSET_NAME="execenv-v${version}.linux.amd64"
+          export CHECKSUM_NAME="execenv-v${version}.checksums.txt"
+          export ASSET_URL="https://github.com/${repo}/releases/download/${tag}/${ASSET_NAME}"
+          export CHECKSUM_URL="https://github.com/${repo}/releases/download/${tag}/${CHECKSUM_NAME}"
+
+          if [[ -z "${RELEASE_NOTES_TEMPLATE:-}" ]]; then
+            echo "::error::Repository variable RELEASE_NOTES_TEMPLATE is empty or not set"
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          notes = os.environ["RELEASE_NOTES_TEMPLATE"]
+
+          replacements = {
+              "__ASSET_NAME__": os.environ["ASSET_NAME"],
+              "__CHECKSUM_NAME__": os.environ["CHECKSUM_NAME"],
+              "__ASSET_URL__": os.environ["ASSET_URL"],
+              "__CHECKSUM_URL__": os.environ["CHECKSUM_URL"],
+          }
+
+          for key, value in replacements.items():
+              notes = notes.replace(key, value)
+
+          Path("release-notes.md").write_text(notes, encoding="utf-8")
+          PY
+
       - name: Create GitHub Release
         shell: bash
         env:
@@ -84,5 +124,6 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" \
             dist/* \
             --title "${GITHUB_REF_NAME}" \
+            --notes "$(cat release-notes.md)" \
             --generate-notes \
             --verify-tag
