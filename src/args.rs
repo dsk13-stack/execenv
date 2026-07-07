@@ -81,6 +81,7 @@ impl fmt::Display for ExecCommand {
 mod tests {
 
     use super::*;
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn files_arg_without_target_file() {

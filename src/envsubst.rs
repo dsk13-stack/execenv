@@ -178,6 +178,7 @@ const MAX_ENV_LEN: usize = 15;
 mod tests {
 
     use super::*;
+    use pretty_assertions::assert_eq;
     use std::io::Cursor;
 
     #[test]
