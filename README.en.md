@@ -8,9 +8,13 @@ This is useful when an application expects a static configuration file, but the 
 
 ## Motivation
 
-`execenv` is designed primarily for container images where configuration must be injected at runtime rather than build time.
+`execenv` is primarily designed for container images where configuration needs to be provided at runtime rather than at build time.
 
-A common case is a frontend or static distroless application image that is reused across multiple environments, such as development, staging, and production. Instead of rebuilding the image for each environment, you can keep a template in the image and render the final configuration when the container starts.
+A typical example is a frontend or static application based on distroless. The same image can be used across multiple environments: development, staging, and production. Instead of rebuilding the image for each environment, you can store a configuration template inside the image and render the final file when the container starts.
+
+The utility addresses the problem of minimal container images that do not include a shell or standard Unix utilities. In such containers, you cannot use a conventional pipeline like `envsubst < config.template > config.yaml && exec nginx -g "daemon off;"`.
+
+At the same time, `execenv` has a very small footprint — less than 1 MB.
 
 ## Features
 
